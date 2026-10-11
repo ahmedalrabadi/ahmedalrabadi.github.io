@@ -189,14 +189,20 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;display:flex;fle
 footer a{text-decoration:none}
 footer a:hover{color:var(--text)}
 
-/* GALLERY */
-.gal{columns:3 260px;column-gap:12px}
-.gal-item{position:relative;display:block;width:100%;margin:0 0 12px;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);cursor:zoom-in;break-inside:avoid}
-.gal-item img,.gal-item video{width:100%;height:auto;display:block;transition:transform .5s}
-.gal-item:hover img,.gal-item:hover video{transform:scale(1.03)}
-.gal-item .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:rgba(226,181,62,.92);color:var(--on-gold);display:grid;place-items:center;font-size:18px;padding-left:3px}
-.gal-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;background:linear-gradient(0deg,rgba(4,12,24,.85),transparent);font-size:13px;font-weight:600;color:var(--text);text-align:left;display:flex;gap:8px;align-items:baseline}
-.gal-cap b{color:var(--gold);font-family:var(--mono);font-size:12px}
+/* GALLERY (albums) */
+.albums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:900px){.albums{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.albums{grid-template-columns:1fr}}
+.album{display:flex;flex-direction:column;text-align:left;padding:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--card);color:var(--text);font:inherit;cursor:pointer;box-shadow:var(--shadow);transition:border-color .2s,transform .2s}
+.album:hover{border-color:rgba(226,181,62,.5);transform:translateY(-2px)}
+.album .pic{position:relative;aspect-ratio:4/3;background:var(--bg-2);overflow:hidden}
+.album .pic img,.album .pic video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.album:hover .pic img,.album:hover .pic video{transform:scale(1.04)}
+.album .yr{position:absolute;left:12px;top:12px;background:var(--gold);color:var(--on-gold);font-weight:800;font-size:12px;padding:4px 10px;border-radius:999px}
+.album .num{position:absolute;right:12px;bottom:12px;background:rgba(8,26,48,.82);font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
+.album .txt{padding:18px 20px 20px;display:flex;flex-direction:column;gap:6px}
+.album h3{font-size:18px;line-height:1.3}
+.album p{font-size:14px;color:var(--text-dim);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .gal-empty{color:var(--text-faint)}
 .gal-num{font-family:var(--mono);font-size:12px;color:var(--text-faint);text-align:right}
 .gal-num b{display:block;font-family:var(--f);font-size:28px;color:var(--gold);line-height:1}
@@ -330,11 +336,11 @@ footer a:hover{color:var(--text)}
       <div>
         <div class="eyebrow">Gallery</div>
         <h2>Moments along the way.</h2>
-        <p>Competitions, teams, test days and travels. Click any photo or video to open it.</p>
+        <p>Competitions, teams, test days and travels. Open an album to see its photos and videos.</p>
       </div>
-      <div class="gal-num"><b id="gal-count">·</b>items</div>
+      <div class="gal-num"><b id="gal-count">·</b>albums</div>
     </div>
-    <div class="gal" id="gal-list"><p class="gal-empty">Loading…</p></div>
+    <div class="albums" id="gal-list"><p class="gal-empty">Loading…</p></div>
   </section>
 
   <section id="contact" class="contact">
@@ -542,56 +548,93 @@ document.getElementById("skill-list").innerHTML = SKILLS.map(s => `
   <article class="card"><h3>${esc(s.name)}</h3>${chips(s.items)}</article>`).join("") + `
   <article class="card"><h3>Languages</h3><div>${LANGUAGES.map(([l, v]) => `<div class="lang"><b>${l}</b><em>${v}</em></div>`).join("")}</div></article>`;
 
-/* ======================= GALLERY =======================
-   Everything inside the "gallery" folder is shown here automatically.
-   Name files like:  2024-erasmus-lublin.jpg  →  "2024 · Erasmus lublin"
-   Photos: jpg, jpeg, png, webp, gif     Videos: mp4, webm, mov
-   ========================================================= */
+/* ======================= GALLERY (albums) =======================
+   Each folder inside "gallery" becomes one album.
+     gallery/2026-teknofest-finals/info.txt   ← line 1 = title, line 2+ = description
+     gallery/2026-teknofest-finals/photo.jpg  ← photos: jpg jpeg png webp gif
+     gallery/2026-teknofest-finals/clip.mp4   ← videos: mp4 webm mov
+   A photo named "cover.jpg" is used as the album cover (otherwise the first photo).
+   Albums are sorted newest first by the year at the start of the folder name.
+   ================================================================ */
 const IMG_EXT = ["jpg", "jpeg", "png", "webp", "gif"];
 const VID_EXT = ["mp4", "webm", "mov", "m4v"];
 const extOf = f => f.split(".").pop().toLowerCase();
-function captionOf(f) {
-  let name = f.replace(/\.[^.]+$/, "");
-  const m = name.match(/^(\d{4})[-_ ]*(.*)$/);
-  let year = "";
-  if (m) { year = m[1]; name = m[2]; }
-  name = name.replace(/^\d{1,2}[-_ ]+/, "").replace(/[-_]+/g, " ").trim();
-  name = name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
-  return { year, text: name };
+const isMedia = f => IMG_EXT.includes(extOf(f)) || VID_EXT.includes(extOf(f));
+const urlOf = path => path.split("/").map(encodeURIComponent).join("/");
+function niceName(folder) {
+  let n = folder.replace(/^\d{4}[-_ ]*/, "").replace(/[-_]+/g, " ").trim();
+  return n ? n.charAt(0).toUpperCase() + n.slice(1) : folder;
 }
-let GALLERY = [];
-async function loadGallery() {
-  let files = [];
+let ALBUMS = [];
+
+async function listGalleryFiles() {
   const host = location.hostname;
   if (host.endsWith(".github.io")) {
     const owner = host.split(".")[0];
-    try {
-      const r = await fetch(`https://api.github.com/repos/${owner}/${host}/contents/gallery`);
-      if (r.ok) files = (await r.json()).filter(f => f.type === "file").map(f => f.name);
-    } catch (e) {}
+    for (const ref of ["HEAD", "main", "master"]) {
+      try {
+        const r = await fetch(`https://api.github.com/repos/${owner}/${host}/git/trees/${ref}?recursive=1`);
+        if (r.ok) {
+          const j = await r.json();
+          return j.tree.filter(t => t.type === "blob" && t.path.startsWith("gallery/")).map(t => t.path.slice(8));
+        }
+      } catch (e) {}
+    }
   }
-  if (!files.length) {
-    try {
-      const r = await fetch("gallery/list.txt", { cache: "no-store" });
-      if (r.ok) files = (await r.text()).split(/\r?\n/).map(s => s.trim()).filter(Boolean);
-    } catch (e) {}
-  }
-  files = files.filter(f => IMG_EXT.includes(extOf(f)) || VID_EXT.includes(extOf(f)));
-  files.sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));   // newest year first
-  GALLERY = files.map(f => {
-    const c = captionOf(f);
-    return { src: "gallery/" + encodeURIComponent(f), video: VID_EXT.includes(extOf(f)), cap: (c.year ? c.year + " · " : "") + c.text, year: c.year, text: c.text };
-  });
+  try {   // backup: a plain list of "folder/file" lines in gallery/list.txt
+    const r = await fetch("gallery/list.txt", { cache: "no-store" });
+    if (r.ok) return (await r.text()).split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+  } catch (e) {}
+  return [];
+}
+
+async function loadGallery() {
   const box = document.getElementById("gal-list");
-  if (!GALLERY.length) { box.innerHTML = `<p class="gal-empty">Photos and videos coming soon.</p>`; return; }
-  document.getElementById("gal-count").textContent = GALLERY.length;
-  box.innerHTML = GALLERY.map((g, i) => `
-    <button class="gal-item" type="button" data-g="${i}" aria-label="Open ${esc(g.cap || "item " + (i + 1))}">
-      ${g.video
-        ? `<video src="${g.src}#t=0.5" muted playsinline preload="metadata"></video><span class="play">▶</span>`
-        : `<img src="${g.src}" alt="${esc(g.text)}" loading="lazy">`}
-      ${g.cap ? `<span class="gal-cap">${g.year ? `<b>${esc(g.year)}</b>` : ""}${esc(g.text)}</span>` : ""}
-    </button>`).join("");
+  const files = await listGalleryFiles();
+  const groups = {};
+  for (const f of files) {
+    const parts = f.split("/");
+    const folder = parts.length > 1 ? parts[0] : "";
+    const name = parts[parts.length - 1];
+    (groups[folder] = groups[folder] || { media: [], hasInfo: false });
+    if (name.toLowerCase() === "info.txt") groups[folder].hasInfo = true;
+    else if (isMedia(name)) groups[folder].media.push(f);
+  }
+  const folders = Object.keys(groups).filter(k => groups[k].media.length)
+    .sort((a, b) => (a === "") - (b === "") || b.localeCompare(a, undefined, { numeric: true }));
+  ALBUMS = await Promise.all(folders.map(async folder => {
+    const g = groups[folder];
+    let title = folder ? niceName(folder) : "More moments", desc = "";
+    if (g.hasInfo) {
+      try {
+        const t = await (await fetch("gallery/" + urlOf(folder) + "/info.txt", { cache: "no-store" })).text();
+        const lines = t.replace(/^﻿/, "").split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+        if (lines[0]) title = lines[0];
+        desc = lines.slice(1).join(" ");
+      } catch (e) {}
+    }
+    g.media.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    const cover = g.media.find(f => /(^|\/)cover\.[a-z0-9]+$/i.test(f)) || g.media.find(f => IMG_EXT.includes(extOf(f))) || g.media[0];
+    const items = [cover, ...g.media.filter(f => f !== cover)].map(f => ({ src: "gallery/" + urlOf(f), video: VID_EXT.includes(extOf(f)), cap: title }));
+    const year = (folder.match(/^(\d{4})/) || [])[1] || "";
+    return { title, desc, year, items };
+  }));
+  if (!ALBUMS.length) { box.innerHTML = `<p class="gal-empty">Photos and videos coming soon.</p>`; return; }
+  document.getElementById("gal-count").textContent = ALBUMS.length;
+  box.innerHTML = ALBUMS.map((a, i) => {
+    const c = a.items[0];
+    const nP = a.items.filter(x => !x.video).length, nV = a.items.length - nP;
+    const count = [nP ? `${nP} photo${nP > 1 ? "s" : ""}` : "", nV ? `${nV} video${nV > 1 ? "s" : ""}` : ""].filter(Boolean).join(" · ");
+    return `
+    <button class="album" type="button" data-a="${i}" aria-label="Open album ${esc(a.title)}">
+      <div class="pic">
+        ${c.video ? `<video src="${c.src}#t=0.5" muted playsinline preload="metadata"></video>` : `<img src="${c.src}" alt="${esc(a.title)}" loading="lazy">`}
+        ${a.year ? `<span class="yr">${esc(a.year)}</span>` : ""}
+        <span class="num">${count}</span>
+      </div>
+      <div class="txt"><h3>${esc(a.title)}</h3>${a.desc ? `<p>${esc(a.desc)}</p>` : ""}</div>
+    </button>`;
+  }).join("");
 }
 loadGallery();
 
@@ -614,7 +657,7 @@ document.getElementById("proj-list").addEventListener("click", e => {
   open(p.photos.map(f => ({ src: "img/" + f, video: false, cap: p.title })), +b.dataset.k);
 });
 document.getElementById("gal-list").addEventListener("click", e => {
-  const b = e.target.closest("[data-g]"); if (b) open(GALLERY, +b.dataset.g);
+  const b = e.target.closest("[data-a]"); if (b) open(ALBUMS[+b.dataset.a].items, 0);
 });
 lb.querySelector(".x").onclick = close;
 lb.querySelector(".prev").onclick = () => step(-1);
