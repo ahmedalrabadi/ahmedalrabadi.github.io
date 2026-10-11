@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ahmed AlRabadi · Robotics Engineer</title>
+<meta name="description" content="Ahmed AlRabadi — mechatronics engineer building autonomous underwater vehicles, drone swarms and vision systems.">
+<meta property="og:title" content="Ahmed AlRabadi · Robotics Engineer">
+<meta property="og:description" content="Autonomous underwater vehicles, drone swarms, air defense turrets and edge AI.">
+<meta property="og:image" content="img/uuv-award.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B1F3A'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='800' font-size='26' text-anchor='middle' fill='%23E2B53E'%3EAA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Theme: deep navy ground, white text, light-blue accents, gold highlights */
+:root{
+  --bg:#081A30; --bg-2:#0B2342; --card:#0F2B50; --card-2:#143561; --line:rgba(160,205,245,.14);
+  --text:#FFFFFF; --text-dim:#B9CDE4; --text-faint:#7F9AB8;
+  --sky:#8CCBFF; --sky-soft:rgba(140,203,255,.12);
+  --gold:#E2B53E; --gold-2:#F2CB62; --gold-soft:rgba(226,181,62,.14); --on-gold:#0B1F3A;
+  --shadow:0 10px 30px rgba(0,0,0,.28);
+  --f:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --r:16px; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f);font-size:15.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{margin:0;font-weight:800;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1140px;margin:0 auto;padding-inline:20px}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:30;background:rgba(8,26,48,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700}
+.mono{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold-2));color:var(--on-gold);display:grid;place-items:center;font-weight:800;font-size:13px}
+.links{display:flex;gap:2px;align-items:center}
+.links a{text-decoration:none;color:var(--text-dim);font-size:14px;font-weight:500;padding:8px 12px;border-radius:8px}
+.links a:hover{color:var(--text);background:var(--sky-soft)}
+.links a.cta{background:var(--gold);color:var(--on-gold);font-weight:700;margin-left:6px}
+.links a.cta:hover{background:var(--gold-2)}
+@media (max-width:780px){.links a:not(.cta){display:none}}
+
+/* HERO */
+.hero{margin-top:28px;border-radius:22px;overflow:hidden;position:relative;display:grid;grid-template-columns:1.2fr .85fr;
+  background:radial-gradient(90% 120% at 100% 0%,rgba(140,203,255,.22),transparent 60%),linear-gradient(160deg,var(--card-2),var(--bg-2));border:1px solid var(--line);box-shadow:var(--shadow)}
+.hero-text{padding:56px 48px;display:flex;flex-direction:column;gap:20px;min-width:0}
+.hey{color:var(--gold);font-weight:700;font-size:19px}
+.hero h1{font-size:clamp(34px,5vw,54px);line-height:1.06;letter-spacing:-1.6px}
+.hero h1 em{font-style:normal;color:var(--sky)}
+.lead{color:var(--text-dim);max-width:54ch;font-size:16px}
+.roles{display:flex;flex-wrap:wrap;gap:8px}
+.roles span{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--sky-soft);color:var(--sky);border:1px solid rgba(140,203,255,.2)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 14px var(--f);padding:12px 20px;border-radius:10px;text-decoration:none;border:0;cursor:pointer}
+.btn-gold{background:var(--gold);color:var(--on-gold)}
+.btn-gold:hover{background:var(--gold-2)}
+.btn-ghost{border:1px solid rgba(255,255,255,.22);color:var(--text)}
+.btn-ghost:hover{background:rgba(255,255,255,.06)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;color:var(--text-faint)}
+.photo{position:relative;min-height:420px}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg-2) 0%,transparent 28%)}
+.award{position:absolute;z-index:2;left:22px;bottom:22px;background:var(--gold);color:var(--on-gold);font-weight:800;font-size:12.5px;padding:9px 15px;border-radius:999px;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+@media (max-width:880px){.hero{grid-template-columns:1fr}.hero-text{padding:36px 24px 28px}.photo{min-height:340px;order:-1}.photo::after{background:linear-gradient(0deg,var(--bg-2) 0%,transparent 35%)}}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
+.stat{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.stat b{display:block;font-size:28px;line-height:1.1;color:var(--gold);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--text-dim)}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* SECTIONS */
+section{padding-top:84px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sky)}
+.head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px;margin-bottom:26px}
+.head h2{font-size:clamp(30px,3.8vw,42px);letter-spacing:-1px;line-height:1.08;margin-top:8px}
+.head p{color:var(--text-dim);max-width:56ch;margin-top:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--text-dim)}
+.pill{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:7px;background:var(--gold-soft);color:var(--gold-2)}
+.pill.sky{background:var(--sky-soft);color:var(--sky)}
+.org{font-size:13px;font-weight:700;color:var(--sky)}
+.date{font-family:var(--mono);font-size:12px;color:var(--text-faint);font-variant-numeric:tabular-nums}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center}
+
+/* PROJECTS */
+.projects{display:flex;flex-direction:column;gap:22px}
+.proj{display:grid;grid-template-columns:1fr 1fr;overflow:hidden}
+.proj:nth-child(even) .gallery{order:2}
+.gallery{display:flex;flex-direction:column;gap:6px;padding:6px;background:var(--bg-2);min-width:0}
+.cover{position:relative;border:0;padding:0;cursor:zoom-in;border-radius:11px;overflow:hidden;aspect-ratio:4/3;background:var(--bg);width:100%}
+.cover img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.cover:hover img{transform:scale(1.03)}
+.cover .count{position:absolute;right:10px;bottom:10px;background:rgba(8,26,48,.8);color:var(--text);font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.thumbs button{border:0;padding:0;cursor:zoom-in;border-radius:8px;overflow:hidden;aspect-ratio:1;background:var(--bg)}
+.thumbs img{width:100%;height:100%;object-fit:cover;opacity:.8;transition:opacity .2s}
+.thumbs button:hover img{opacity:1}
+.info{padding:30px 32px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.info h3{font-size:25px;letter-spacing:-.5px;line-height:1.2}
+.info p{color:var(--text-dim)}
+.role{font-size:14px;color:var(--text-dim)}
+.role b{color:var(--text)}
+.lbl{font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+ul.pts{margin:0;padding-left:18px;color:var(--text-dim);font-size:14.5px;display:flex;flex-direction:column;gap:5px}
+ul.pts li::marker{color:var(--sky)}
+details summary{list-style:none;cursor:pointer;font-weight:700;font-size:13.5px;color:var(--sky);width:max-content}
+details summary::-webkit-details-marker{display:none}
+details summary::after{content:" +"}
+details[open] summary::after{content:" –"}
+details .more{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.link{font-weight:700;font-size:14px;color:var(--gold);text-decoration:none}
+.link:hover{text-decoration:underline}
+@media (max-width:880px){.proj{grid-template-columns:1fr}.proj:nth-child(even) .gallery{order:0}.info{padding:24px 22px}}
+
+/* EXPERIENCE */
+.exp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.exp .card{padding:24px 26px;display:flex;flex-direction:column;gap:10px}
+.exp h3{font-size:19px;line-height:1.3}
+.exp p{color:var(--text-dim);font-size:14.5px}
+@media (max-width:760px){.exp{grid-template-columns:1fr}}
+
+/* HONORS */
+.band{margin-top:84px;border-radius:22px;padding:46px;background:radial-gradient(80% 140% at 0% 0%,rgba(226,181,62,.18),transparent 55%),linear-gradient(160deg,var(--card-2),var(--bg-2));border:1px solid var(--line)}
+.band h2{font-size:clamp(28px,3.4vw,36px);letter-spacing:-.8px;margin:8px 0 28px}
+.honors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.honor{display:flex;gap:16px;align-items:flex-start;padding:18px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.medal{flex:none;width:46px;height:46px;border-radius:12px;background:var(--gold);color:var(--on-gold);display:grid;place-items:center;font-weight:800;font-size:14px}
+.honor b{display:block;font-size:15px}
+.honor span{font-size:13px;color:var(--text-dim)}
+@media (max-width:760px){.band{padding:28px 20px}.honors{grid-template-columns:1fr}}
+
+/* SKILLS */
+.skills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.skills .card{padding:22px 24px;display:flex;flex-direction:column;gap:14px}
+.skills h3{font-size:16px;color:var(--sky)}
+.lang{display:flex;justify-content:space-between;gap:10px;font-size:14px;padding:8px 0;border-bottom:1px solid var(--line)}
+.lang:last-child{border:0}
+.lang em{font-style:normal;color:var(--text-faint);font-family:var(--mono);font-size:12px}
+@media (max-width:900px){.skills{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.skills{grid-template-columns:1fr}}
+
+/* EDUCATION */
+.edu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.edu .card{padding:26px;display:flex;flex-direction:column;gap:10px}
+.edu h3{font-size:20px}
+.edu p{color:var(--text-dim);font-size:14.5px}
+.cert{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:9px 0;border-bottom:1px solid var(--line)}
+.cert:last-child{border:0}
+.cert span{color:var(--text-faint);text-align:right}
+@media (max-width:760px){.edu{grid-template-columns:1fr}}
+
+/* JOURNEY */
+.journey{padding:40px}
+.tl{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;position:relative;margin-top:30px}
+.tl::before{content:"";position:absolute;left:9%;right:9%;top:7px;height:2px;background:linear-gradient(90deg,var(--sky),var(--gold))}
+.step{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;position:relative}
+.dot{width:16px;height:16px;border-radius:50%;background:var(--card);border:3px solid var(--sky)}
+.step:nth-child(n+4) .dot{border-color:var(--gold)}
+.yr{font-family:var(--mono);font-size:12px;color:var(--text-faint);margin-top:6px}
+.step b{font-size:14.5px}
+.step p{font-size:13px;color:var(--text-dim)}
+@media (max-width:820px){.journey{padding:26px 20px}.tl{grid-template-columns:1fr;gap:22px;padding-left:28px}
+  .tl::before{left:7px;right:auto;top:8px;bottom:8px;width:2px;height:auto;background:linear-gradient(180deg,var(--sky),var(--gold))}
+  .step{align-items:flex-start;text-align:left}.dot{position:absolute;left:-28px;top:3px}.yr{margin-top:0}}
+
+/* CONTACT */
+.contact{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:end;padding-bottom:40px}
+.contact h2{font-size:clamp(36px,5vw,58px);letter-spacing:-1.6px;line-height:1.02}
+.contact h2 em{font-style:normal;color:var(--gold)}
+.contact p{color:var(--text-dim);margin-top:14px;max-width:46ch}
+.rows{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 18px;text-decoration:none}
+.row small{display:block;font-size:12px;color:var(--text-faint);font-weight:600}
+.row span{overflow-wrap:anywhere}
+.row .go{color:var(--gold);font-weight:800}
+a.row:hover{border-color:rgba(226,181,62,.5)}
+@media (max-width:820px){.contact{grid-template-columns:1fr}}
+footer{border-top:1px solid var(--line);padding-block:24px 36px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:13.5px;color:var(--text-faint)}
+footer a{text-decoration:none}
+footer a:hover{color:var(--text)}
+
+/* LIGHTBOX */
+[hidden]{display:none!important}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(4,12,24,.94);display:flex;align-items:center;justify-content:center;padding:56px 16px}
+.lb img{max-width:min(1200px,100%);max-height:100%;object-fit:contain;border-radius:10px}
+.lb button{position:absolute;background:rgba(255,255,255,.1);border:0;color:#fff;width:46px;height:46px;border-radius:50%;font-size:22px;cursor:pointer}
+.lb button:hover{background:rgba(255,255,255,.2)}
+.lb .x{top:14px;right:14px}.lb .prev{left:14px;top:50%;transform:translateY(-50%)}.lb .next{right:14px;top:50%;transform:translateY(-50%)}
+.lb .cap{position:absolute;bottom:16px;left:0;right:0;text-align:center;color:var(--text-dim);font-size:13px}
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mono">AA</span>Ahmed AlRabadi</a>
+    <div class="links">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#journey">Journey</a>
+      <a class="cta" href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap" id="top">
+
+  <header class="hero">
+    <div class="hero-text">
+      <div class="hey">Hey, I'm Ahmed.</div>
+      <h1>I build robots that work <em>underwater</em>, in the <em>air</em> and in the real world.</h1>
+      <p class="lead">Mechatronics engineer focused on robotics and autonomous systems. I take machines from CAD and custom PCBs to flight controllers, autonomy code and field tests, and I lead the teams that build them.</p>
+      <div class="roles"><span>Robotics &amp; Autonomy</span><span>Embedded Systems</span><span>Mechanical Design</span><span>Computer Vision</span></div>
+      <div class="actions">
+        <a class="btn btn-gold" href="#projects">See my projects</a>
+        <a class="btn btn-ghost" href="cv.pdf" target="_blank" rel="noopener">Download CV</a>
+      </div>
+      <div class="meta"><span>Breda, Netherlands</span><span>ahmed.alrabadi.sch@gmail.com</span></div>
+    </div>
+    <div class="photo">
+      <img src="img/profile.jpg" alt="Ahmed AlRabadi">
+      <div class="award">🥈 2nd in Türkiye · TEKNOFEST 2026</div>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>2nd</b><span>nationwide, TEKNOFEST 2026 underwater systems</span></div>
+    <div class="stat"><b>×3</b><span>TEKNOFEST project support awards</span></div>
+    <div class="stat"><b>2nd</b><span>ranked in the department, B.Sc.</span></div>
+    <div class="stat"><b>9</b><span>engineers led on the UUV team</span></div>
+  </div>
+
+  <section id="projects">
+    <div class="head">
+      <div>
+        <div class="eyebrow">Projects</div>
+        <h2>Built, wired and tested by hand.</h2>
+        <p>Competition robots and funded research, each taken from first sketch to working hardware. Click a photo to see more.</p>
+      </div>
+    </div>
+    <div class="projects" id="proj-list"></div>
+  </section>
+
+  <div class="band" id="honors">
+    <div class="eyebrow" style="color:var(--gold)">Honors &amp; grants</div>
+    <h2>The wins that mattered most.</h2>
+    <div class="honors" id="honor-list"></div>
+  </div>
+
+  <section id="experience">
+    <div class="head"><div><div class="eyebrow">Experience</div><h2>Where the work happens.</h2></div></div>
+    <div class="exp" id="exp-list"></div>
+  </section>
+
+  <section id="skills">
+    <div class="head"><div><div class="eyebrow">Skills</div><h2>The toolkit.</h2></div></div>
+    <div class="skills" id="skill-list"></div>
+  </section>
+
+  <section id="education">
+    <div class="head"><div><div class="eyebrow">Education</div><h2>Where I learned.</h2></div></div>
+    <div class="edu">
+      <article class="card">
+        <div class="top"><span class="org">Sakarya University of Applied Sciences</span><span class="date">2022 – 2026</span></div>
+        <h3>B.Sc. Mechatronics Engineering</h3>
+        <p>Faculty of Technology. Graduated ranked 2nd in the department, on a fully funded Türkiye Scholarship (YTB).</p>
+        <div><span class="pill">Ranked 2nd in department</span></div>
+        <div class="top" style="margin-top:14px"><span class="org">Lublin University of Technology, Poland</span><span class="date">02/2024 – 07/2024</span></div>
+        <p>Erasmus exchange · Faculty of Electrical Engineering &amp; Computer Science.</p>
+      </article>
+      <article class="card">
+        <div class="lbl">Certifications &amp; courses</div>
+        <div>
+          <div class="cert"><b>Autonomous Driving Technologies</b><span>National Technology Academy</span></div>
+          <div class="cert"><b>Self Driving and ROS 2 Odometry &amp; Control</b><span>Udemy</span></div>
+          <div class="cert"><b>English for STEM</b><span>OPEN Network</span></div>
+          <div class="cert"><b>Digital Skills: Mobile</b><span>Accenture</span></div>
+        </div>
+        <div class="lbl" style="margin-top:8px">Volunteering</div>
+        <div>
+          <div class="cert"><b>Emergency Logistics Volunteer</b><span>Turkish Red Crescent</span></div>
+          <div class="cert"><b>Erasmus+ Project Writer</b><span>Eurodesk Türkiye</span></div>
+          <div class="cert"><b>Evaluation Committee Rapporteur</b><span>Yemeni Students' Union, Sakarya</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="journey">
+    <div class="card journey">
+      <div class="eyebrow">Journey</div>
+      <div class="head" style="margin:0"><h2>From scholarship to the robotics lab.</h2></div>
+      <div class="tl">
+        <div class="step"><span class="dot"></span><span class="yr">2022</span><b>YTB Scholarship</b><p>Started Mechatronics Engineering in Sakarya.</p></div>
+        <div class="step"><span class="dot"></span><span class="yr">2024</span><b>Erasmus, Lublin</b><p>A semester of electrical engineering &amp; CS in Poland.</p></div>
+        <div class="step"><span class="dot"></span><span class="yr">2025</span><b>First turret &amp; TÜBİTAK</b><p>Air defense turret Gen 1 and a funded research grant.</p></div>
+        <div class="step"><span class="dot"></span><span class="yr">2026</span><b>2nd in Türkiye</b><p>UUV team takes 2nd place. Graduated ranked 2nd.</p></div>
+        <div class="step"><span class="dot"></span><span class="yr">Now</span><b>Breda Robotics</b><p>Autonomous mobile robots in the Netherlands.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div>
+      <div class="eyebrow">Contact</div>
+      <h2>Let's build something <em>that moves.</em></h2>
+      <p>Open to roles and collaborations in robotics, autonomous systems and embedded engineering.</p>
+    </div>
+    <div class="rows">
+      <a class="card row" href="mailto:ahmed.alrabadi.sch@gmail.com"><div><small>Email</small><span>ahmed.alrabadi.sch@gmail.com</span></div><span class="go">→</span></a>
+      <a class="card row" href="https://www.linkedin.com/in/ahmed-alrabadi-38631626a/" target="_blank" rel="noopener"><div><small>LinkedIn</small><span>in/ahmed-alrabadi</span></div><span class="go">↗</span></a>
+      <div class="card row"><div><small>Location</small><span>Breda, Netherlands</span></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© <span id="yr">2026</span> Ahmed AlRabadi</span>
+    <span><a href="https://www.linkedin.com/in/ahmed-alrabadi-38631626a/" target="_blank" rel="noopener">LinkedIn</a> · <a href="#top">Back to top ↑</a></span>
+  </footer>
+</main>
+
+<div class="lb" id="lb" hidden>
+  <img id="lb-img" alt="">
+  <button class="x" type="button" aria-label="Close">✕</button>
+  <button class="prev" type="button" aria-label="Previous photo">‹</button>
+  <button class="next" type="button" aria-label="Next photo">›</button>
+  <div class="cap" id="lb-cap"></div>
+</div>
+
+<script>
+/* ================================================================
+   CONTENT — to add something new, copy one block and edit it.
+   Put new photos in the img/ folder and list their file names.
+   ================================================================ */
+const PROJECTS = [
+  {
+    title: "Autonomous Underwater Vehicle (ATİ-Marine)",
+    org: "TEKNOFEST 2026 · Unmanned Underwater Systems, Advanced Category",
+    date: "2026",
+    role: "Team Captain & Project Coordinator · team of 9",
+    badges: ["🥈 2nd Place Nationwide", "Project Support Grant"],
+    summary: "A fully autonomous UUV built for the hardest tier of the competition: a watertight structure, multi-direction underwater movement and missions run on onboard sensors.",
+    did: [
+      "Led a 9-person team across mechanical, electronics, software and documentation, building a dual-vehicle system.",
+      "Built the full control stack: Cube Orange+ on ArduSub 4.7.0, Raspberry Pi 5 on BlueOS, MS5837 depth sensor, brushless thrusters with reversible ESCs.",
+      "Wrote autonomous mission code in Python/pymavlink: line following, buoy circling, depth and heading hold, tested in ArduSub SITL first.",
+      "Ran assembly, integration and waterproofing tests, and coordinated the design reports."
+    ],
+    results: ["2nd place in Türkiye (Advanced Category)", "Reached the finals in Gölcük", "TEKNOFEST 2026 Project Support Grant"],
+    tools: ["Cube Orange+", "ArduSub", "BlueOS", "Raspberry Pi 5", "pymavlink", "Python", "OpenCV", "SITL"],
+    photos: ["uuv-award.jpg", "uuv-dock-1.jpg", "uuv-underwater.jpg", "uuv-dock-2.jpg", "uuv-control.jpg", "uuv-dock-3.jpg", "uuv-teknofest.jpg"]
+  },
+  {
+    title: "Autonomous Multi-UAV Swarm",
+    org: "TEKNOFEST 2026 · Swarm UAV Competition",
+    date: "2026",
+    role: "Mechanical & Electronics Sub-Team Lead",
+    badges: ["Project Support Grant"],
+    summary: "Three drones flying as one swarm, with ROS 2 autonomy on Raspberry Pi 5 and Pixhawk flight control. Every mission is simulated in Gazebo before it flies.",
+    did: [
+      "Led hardware for all 3 drones: frames, component choice, soldering and wiring harnesses.",
+      "Set up the Pixhawk flight controllers and their link to the onboard computers.",
+      "Helped build QR code reading and color detection.",
+      "Flight-tested and validated the first drone."
+    ],
+    results: ["Passed all design report stages", "First drone built and flight-tested", "Drone-to-drone communication in testing"],
+    tools: ["Fusion 360", "Pixhawk", "Raspberry Pi 5", "ROS 2", "Gazebo", "QGroundControl", "OpenCV"],
+    photos: ["drone-top.jpg", "drone-build.jpg", "drone-sim.jpg"]
+  },
+  {
+    title: "Air Defense Turret · Gen 2",
+    org: "TEKNOFEST 2026 · Çelikkubbe Air Defense Systems",
+    date: "2026",
+    role: "Mechanical Design Lead & Electronics Integration · team of 3",
+    badges: ["Project Support Grant"],
+    summary: "A ground-up redesign of the turret: faster and more accurate, with one custom PCB replacing the old scattered wiring.",
+    did: [
+      "Full mechanical redesign in Fusion 360, checked with Abaqus structural analysis.",
+      "3D-printed every structural part on Bambu Lab A1 and Carbon X printers.",
+      "Designed a custom PCB that puts power, motor control and sensors on one board.",
+      "Recalculated center of gravity and motor torque for the new layout."
+    ],
+    results: ["Passed the Preliminary Design Review", "Faster and more accurate than Gen 1", "TEKNOFEST 2026 Project Support Grant"],
+    tools: ["Fusion 360", "Abaqus", "Custom PCB", "Stereo cameras", "Bambu Lab A1", "Carbon X"],
+    photos: ["gen2-turret.jpg", "gen2-turret-2.jpg", "gen2-parts.jpg", "gen2-exploded.jpg", "gen2-render.jpg"]
+  },
+  {
+    title: "Smart Library Seat Occupancy Detection",
+    org: "TÜBİTAK 2209-A · Funded research",
+    date: "2025 – 2026",
+    role: "Project Coordinator · team of 3",
+    badges: ["0.995 mAP@0.5", "TÜBİTAK Grant"],
+    summary: "Real-time edge AI that tells a seat used by a person from a seat only blocked by bags or books, and shows free seats on a touchscreen and a mobile app.",
+    did: [
+      "Planned the project and led the team.",
+      "Designed the system and led dataset collection, labeling and YOLOv8n training.",
+      "Put the model on a Raspberry Pi 5 with a Hailo AI HAT.",
+      "Wrote all TÜBİTAK reports and handled budget, risk and data privacy."
+    ],
+    results: ["0.995 mAP@0.5 and about 0.83 mAP@0.5:0.95", "Precision and recall ≈ 0.99 (1 false positive, 3 misses in 635)", "Tested in a real library", "Research paper in preparation"],
+    tools: ["Python", "OpenCV", "YOLOv8n", "Raspberry Pi 5", "Hailo AI HAT", "3D printing"],
+    photos: ["lib-detect.jpg", "lib-monitor.jpg", "lib-cameras.jpg", "lib-map.jpg", "lib-settings.jpg"]
+  },
+  {
+    title: "Air Defense Turret · Gen 1",
+    org: "TEKNOFEST 2025 · Air Defense Systems",
+    date: "2025",
+    role: "Mechanical Design Lead & Fabrication · team of 3",
+    badges: ["Video stage"],
+    summary: "A motorized turret with autonomous target tracking and manual override, built inside a custom 3D-printed structure.",
+    did: [
+      "Owned the mechanical pipeline: concept → CAD (CATIA, Fusion 360) → Abaqus → fabrication.",
+      "Calculated center of gravity, motor torque and load distribution.",
+      "Brought the mechanical, electronic and sensing parts together into one assembly."
+    ],
+    results: ["Working prototype meeting all mechanical requirements", "Passed the design reviews", "Reached the video demonstration stage"],
+    tools: ["CATIA", "Fusion 360", "Abaqus", "3D printing"],
+    photos: ["gen1-turret.jpg", "gen1-desk.jpg", "gen1-cad.jpg", "gen1-wiring.jpg"],
+    link: { text: "Watch the demo video ↗", url: "https://youtu.be/FFVIy7cpHsA" }
+  }
+];
+
+const EXPERIENCE = [
+  { title: "Robotics Software Engineering Intern (Erasmus)", org: "Breda Robotics · Breda, Netherlands", date: "09/2026 – Now", now: true,
+    text: "Software for an autonomous mobile robot: mapping, path planning and navigation. Built a UI for robot setup and remote driving.",
+    tags: ["AMR", "Navigation", "Path planning", "UI"] },
+  { title: "Project Leader & Technical Lead", org: "ATİLAB Teknoloji Platformu · Istanbul", date: "02/2026 – Now", now: true,
+    text: "Leads teams across software, electronics and mechanics building TEKNOFEST robots. Plans roadmaps and tasks, and does hands-on integration and testing.",
+    tags: ["Leadership", "Integration", "Embedded"] },
+  { title: "R&D Engineer Intern", org: "TBB TECH · Istanbul", date: "02/2026 – 06/2026",
+    text: "Navigation and path planning for warehouse robot prototypes, with obstacle avoidance and safety rules for working next to people. Tested on real robots.",
+    tags: ["Path planning", "Obstacle avoidance", "Safety"] },
+  { title: "Robotics & Embedded Systems Intern", org: "TBB TECH · Istanbul", date: "07/2025 – 09/2025",
+    text: "Designed and printed parts in Fusion 360. Programmed ESP32, Arduino and Raspberry Pi for motors and sensors. Built YOLO vision and added cameras and LiDAR.",
+    tags: ["ESP32", "Raspberry Pi", "YOLO", "LiDAR"] }
+];
+
+const HONORS = [
+  { mark: "2nd", title: "2nd Place Nationwide", sub: "TEKNOFEST 2026 Unmanned Underwater Systems · Advanced Category" },
+  { mark: "×3", title: "TEKNOFEST 2026 Project Support Award", sub: "Underwater Systems · Çelikkubbe Air Defense · Swarm UAV" },
+  { mark: "TÜB", title: "TÜBİTAK 2209-A Research Grant", sub: "Library space use and human presence detection · 2025–2026" },
+  { mark: "YTB", title: "Türkiye Scholarship (YTB)", sub: "Fully funded undergraduate scholarship · 2022–2026" }
+];
+
+const SKILLS = [
+  { name: "Robotics & Autonomy", items: ["ROS 2 Humble", "ArduPilot / ArduSub", "PX4", "MAVLink & pymavlink", "BlueOS", "QGroundControl", "Gazebo", "SITL", "Multi-UAV swarm"] },
+  { name: "Hardware & Embedded", items: ["Pixhawk / Cube Orange+", "Raspberry Pi 5", "Jetson Orin Nano", "ESP32", "Arduino", "PIC", "I²C / UART / SPI / CAN", "ESC & LiPo power", "Custom PCB", "Wiring harnesses"] },
+  { name: "Computer Vision", items: ["OpenCV", "YOLO", "Object detection", "Camera calibration", "Hailo AI HAT"] },
+  { name: "CAD & Manufacturing", items: ["Fusion 360", "CATIA", "SolidWorks", "AutoCAD", "Abaqus", "3D printing", "Waterproof sealing"] },
+  { name: "Programming & Tools", items: ["C / C++", "Python", "Assembly", "Linux", "Git", "Docker", "MATLAB / Simulink", "Bash"] }
+];
+const LANGUAGES = [["Arabic", "Native"], ["English", "C1 · TOEFL ITP"], ["Turkish", "C1"], ["German", "A1"]];
+
+/* ========================= BUILD THE PAGE ========================= */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const chips = a => `<div class="chips">${a.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>`;
+const list = a => `<ul class="pts">${a.map(t => `<li>${esc(t)}</li>`).join("")}</ul>`;
+
+document.getElementById("proj-list").innerHTML = PROJECTS.map((p, i) => {
+  const ph = p.photos || [];
+  const thumbs = ph.slice(1, 5).map((f, k) =>
+    `<button type="button" data-p="${i}" data-k="${k + 1}" aria-label="Open photo ${k + 2}"><img src="img/${esc(f)}" alt="" loading="lazy"></button>`).join("");
+  return `
+  <article class="card proj">
+    <div class="gallery">
+      <button class="cover" type="button" data-p="${i}" data-k="0" aria-label="Open photos of ${esc(p.title)}">
+        <img src="img/${esc(ph[0])}" alt="${esc(p.title)}" loading="lazy">
+        ${ph.length > 1 ? `<span class="count">${ph.length} photos</span>` : ""}
+      </button>
+      ${ph.length > 1 ? `<div class="thumbs">${thumbs}</div>` : ""}
+    </div>
+    <div class="info">
+      <div class="top"><span class="org">${esc(p.org)}</span><span class="date">${esc(p.date)}</span></div>
+      <h3>${esc(p.title)}</h3>
+      <div class="chips">${p.badges.map(b => `<span class="pill">${esc(b)}</span>`).join("")}</div>
+      <p>${esc(p.summary)}</p>
+      <div class="role"><b>Role:</b> ${esc(p.role)}</div>
+      <details${i === 0 ? " open" : ""}>
+        <summary>What I did &amp; results</summary>
+        <div class="more">
+          <div class="lbl">What I did</div>${list(p.did)}
+          <div class="lbl">Results</div>${list(p.results)}
+        </div>
+      </details>
+      ${chips(p.tools)}
+      ${p.link ? `<a class="link" href="${esc(p.link.url)}" target="_blank" rel="noopener">${esc(p.link.text)}</a>` : ""}
+    </div>
+  </article>`;
+}).join("");
+
+document.getElementById("exp-list").innerHTML = EXPERIENCE.map(e => `
+  <article class="card">
+    <div class="top"><span class="org">${esc(e.org)}</span><span class="date">${esc(e.date)}</span></div>
+    <h3>${esc(e.title)}</h3>
+    ${e.now ? `<div><span class="pill sky">Current</span></div>` : ""}
+    <p>${esc(e.text)}</p>
+    ${chips(e.tags)}
+  </article>`).join("");
+
+document.getElementById("honor-list").innerHTML = HONORS.map(h => `
+  <div class="honor"><span class="medal">${esc(h.mark)}</span><div><b>${esc(h.title)}</b><span>${esc(h.sub)}</span></div></div>`).join("");
+
+document.getElementById("skill-list").innerHTML = SKILLS.map(s => `
+  <article class="card"><h3>${esc(s.name)}</h3>${chips(s.items)}</article>`).join("") + `
+  <article class="card"><h3>Languages</h3><div>${LANGUAGES.map(([l, v]) => `<div class="lang"><b>${l}</b><em>${v}</em></div>`).join("")}</div></article>`;
+
+/* Photo viewer */
+const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap");
+let cur = { p: 0, k: 0 };
+function show() {
+  const p = PROJECTS[cur.p];
+  lbImg.src = "img/" + p.photos[cur.k];
+  lbImg.alt = p.title;
+  lbCap.textContent = `${p.title} · ${cur.k + 1} / ${p.photos.length}`;
+}
+function open(p, k) { cur = { p, k }; show(); lb.hidden = false; document.body.style.overflow = "hidden"; lb.querySelector(".x").focus(); }
+function close() { lb.hidden = true; document.body.style.overflow = ""; }
+function step(d) { const n = PROJECTS[cur.p].photos.length; cur.k = (cur.k + d + n) % n; show(); }
+document.getElementById("proj-list").addEventListener("click", e => {
+  const b = e.target.closest("[data-p]"); if (b) open(+b.dataset.p, +b.dataset.k);
+});
+lb.querySelector(".x").onclick = close;
+lb.querySelector(".prev").onclick = () => step(-1);
+lb.querySelector(".next").onclick = () => step(1);
+lb.addEventListener("click", e => { if (e.target === lb) close(); });
+document.addEventListener("keydown", e => {
+  if (lb.hidden) return;
+  if (e.key === "Escape") close();
+  if (e.key === "ArrowLeft") step(-1);
+  if (e.key === "ArrowRight") step(1);
+});
+document.getElementById("yr").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
