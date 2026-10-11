@@ -189,7 +189,20 @@ footer{border-top:1px solid var(--line);padding-block:24px 36px;display:flex;fle
 footer a{text-decoration:none}
 footer a:hover{color:var(--text)}
 
+/* GALLERY */
+.gal{columns:3 260px;column-gap:12px}
+.gal-item{position:relative;display:block;width:100%;margin:0 0 12px;padding:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);cursor:zoom-in;break-inside:avoid}
+.gal-item img,.gal-item video{width:100%;height:auto;display:block;transition:transform .5s}
+.gal-item:hover img,.gal-item:hover video{transform:scale(1.03)}
+.gal-item .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;background:rgba(226,181,62,.92);color:var(--on-gold);display:grid;place-items:center;font-size:18px;padding-left:3px}
+.gal-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;background:linear-gradient(0deg,rgba(4,12,24,.85),transparent);font-size:13px;font-weight:600;color:var(--text);text-align:left;display:flex;gap:8px;align-items:baseline}
+.gal-cap b{color:var(--gold);font-family:var(--mono);font-size:12px}
+.gal-empty{color:var(--text-faint)}
+.gal-num{font-family:var(--mono);font-size:12px;color:var(--text-faint);text-align:right}
+.gal-num b{display:block;font-family:var(--f);font-size:28px;color:var(--gold);line-height:1}
+
 /* LIGHTBOX */
+.lb video{max-width:min(1200px,100%);max-height:100%;border-radius:10px;background:#000}
 [hidden]{display:none!important}
 .lb{position:fixed;inset:0;z-index:100;background:rgba(4,12,24,.94);display:flex;align-items:center;justify-content:center;padding:56px 16px}
 .lb img{max-width:min(1200px,100%);max-height:100%;object-fit:contain;border-radius:10px}
@@ -209,6 +222,7 @@ footer a:hover{color:var(--text)}
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
       <a href="#journey">Journey</a>
+      <a href="#gallery">Gallery</a>
       <a class="cta" href="#contact">Contact</a>
     </div>
   </div>
@@ -311,6 +325,18 @@ footer a:hover{color:var(--text)}
     </div>
   </section>
 
+  <section id="gallery">
+    <div class="head">
+      <div>
+        <div class="eyebrow">Gallery</div>
+        <h2>Moments along the way.</h2>
+        <p>Competitions, teams, test days and travels. Click any photo or video to open it.</p>
+      </div>
+      <div class="gal-num"><b id="gal-count">·</b>items</div>
+    </div>
+    <div class="gal" id="gal-list"><p class="gal-empty">Loading…</p></div>
+  </section>
+
   <section id="contact" class="contact">
     <div>
       <div class="eyebrow">Contact</div>
@@ -332,6 +358,7 @@ footer a:hover{color:var(--text)}
 
 <div class="lb" id="lb" hidden>
   <img id="lb-img" alt="">
+  <video id="lb-vid" controls playsinline hidden></video>
   <button class="x" type="button" aria-label="Close">✕</button>
   <button class="prev" type="button" aria-label="Previous photo">‹</button>
   <button class="next" type="button" aria-label="Next photo">›</button>
@@ -515,20 +542,79 @@ document.getElementById("skill-list").innerHTML = SKILLS.map(s => `
   <article class="card"><h3>${esc(s.name)}</h3>${chips(s.items)}</article>`).join("") + `
   <article class="card"><h3>Languages</h3><div>${LANGUAGES.map(([l, v]) => `<div class="lang"><b>${l}</b><em>${v}</em></div>`).join("")}</div></article>`;
 
-/* Photo viewer */
-const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbCap = document.getElementById("lb-cap");
-let cur = { p: 0, k: 0 };
-function show() {
-  const p = PROJECTS[cur.p];
-  lbImg.src = "img/" + p.photos[cur.k];
-  lbImg.alt = p.title;
-  lbCap.textContent = `${p.title} · ${cur.k + 1} / ${p.photos.length}`;
+/* ======================= GALLERY =======================
+   Everything inside the "gallery" folder is shown here automatically.
+   Name files like:  2024-erasmus-lublin.jpg  →  "2024 · Erasmus lublin"
+   Photos: jpg, jpeg, png, webp, gif     Videos: mp4, webm, mov
+   ========================================================= */
+const IMG_EXT = ["jpg", "jpeg", "png", "webp", "gif"];
+const VID_EXT = ["mp4", "webm", "mov", "m4v"];
+const extOf = f => f.split(".").pop().toLowerCase();
+function captionOf(f) {
+  let name = f.replace(/\.[^.]+$/, "");
+  const m = name.match(/^(\d{4})[-_ ]*(.*)$/);
+  let year = "";
+  if (m) { year = m[1]; name = m[2]; }
+  name = name.replace(/^\d{1,2}[-_ ]+/, "").replace(/[-_]+/g, " ").trim();
+  name = name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
+  return { year, text: name };
 }
-function open(p, k) { cur = { p, k }; show(); lb.hidden = false; document.body.style.overflow = "hidden"; lb.querySelector(".x").focus(); }
-function close() { lb.hidden = true; document.body.style.overflow = ""; }
-function step(d) { const n = PROJECTS[cur.p].photos.length; cur.k = (cur.k + d + n) % n; show(); }
+let GALLERY = [];
+async function loadGallery() {
+  let files = [];
+  const host = location.hostname;
+  if (host.endsWith(".github.io")) {
+    const owner = host.split(".")[0];
+    try {
+      const r = await fetch(`https://api.github.com/repos/${owner}/${host}/contents/gallery`);
+      if (r.ok) files = (await r.json()).filter(f => f.type === "file").map(f => f.name);
+    } catch (e) {}
+  }
+  if (!files.length) {
+    try {
+      const r = await fetch("gallery/list.txt", { cache: "no-store" });
+      if (r.ok) files = (await r.text()).split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    } catch (e) {}
+  }
+  files = files.filter(f => IMG_EXT.includes(extOf(f)) || VID_EXT.includes(extOf(f)));
+  files.sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));   // newest year first
+  GALLERY = files.map(f => {
+    const c = captionOf(f);
+    return { src: "gallery/" + encodeURIComponent(f), video: VID_EXT.includes(extOf(f)), cap: (c.year ? c.year + " · " : "") + c.text, year: c.year, text: c.text };
+  });
+  const box = document.getElementById("gal-list");
+  if (!GALLERY.length) { box.innerHTML = `<p class="gal-empty">Photos and videos coming soon.</p>`; return; }
+  document.getElementById("gal-count").textContent = GALLERY.length;
+  box.innerHTML = GALLERY.map((g, i) => `
+    <button class="gal-item" type="button" data-g="${i}" aria-label="Open ${esc(g.cap || "item " + (i + 1))}">
+      ${g.video
+        ? `<video src="${g.src}#t=0.5" muted playsinline preload="metadata"></video><span class="play">▶</span>`
+        : `<img src="${g.src}" alt="${esc(g.text)}" loading="lazy">`}
+      ${g.cap ? `<span class="gal-cap">${g.year ? `<b>${esc(g.year)}</b>` : ""}${esc(g.text)}</span>` : ""}
+    </button>`).join("");
+}
+loadGallery();
+
+/* Photo & video viewer */
+const lb = document.getElementById("lb"), lbImg = document.getElementById("lb-img"), lbVid = document.getElementById("lb-vid"), lbCap = document.getElementById("lb-cap");
+let items = [], idx = 0;
+function show() {
+  const it = items[idx];
+  lbVid.pause();
+  if (it.video) { lbImg.hidden = true; lbVid.hidden = false; lbVid.src = it.src; lbVid.play().catch(() => {}); }
+  else { lbVid.hidden = true; lbVid.removeAttribute("src"); lbImg.hidden = false; lbImg.src = it.src; lbImg.alt = it.cap; }
+  lbCap.textContent = `${it.cap}${items.length > 1 ? ` · ${idx + 1} / ${items.length}` : ""}`;
+}
+function open(list, k) { items = list; idx = k; show(); lb.hidden = false; document.body.style.overflow = "hidden"; lb.querySelector(".x").focus(); }
+function close() { lb.hidden = true; lbVid.pause(); document.body.style.overflow = ""; }
+function step(d) { idx = (idx + d + items.length) % items.length; show(); }
 document.getElementById("proj-list").addEventListener("click", e => {
-  const b = e.target.closest("[data-p]"); if (b) open(+b.dataset.p, +b.dataset.k);
+  const b = e.target.closest("[data-p]"); if (!b) return;
+  const p = PROJECTS[+b.dataset.p];
+  open(p.photos.map(f => ({ src: "img/" + f, video: false, cap: p.title })), +b.dataset.k);
+});
+document.getElementById("gal-list").addEventListener("click", e => {
+  const b = e.target.closest("[data-g]"); if (b) open(GALLERY, +b.dataset.g);
 });
 lb.querySelector(".x").onclick = close;
 lb.querySelector(".prev").onclick = () => step(-1);
