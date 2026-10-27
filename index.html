@@ -7,7 +7,7 @@
 <meta name="description" content="Ahmed AlRabadi — mechatronics engineer building autonomous underwater vehicles, drone swarms and vision systems.">
 <meta property="og:title" content="Ahmed AlRabadi · Robotics Engineer">
 <meta property="og:description" content="Autonomous underwater vehicles, drone swarms, air defense turrets and edge AI.">
-<meta property="og:image" content="img/uuv-award.jpg">
+<meta property="og:image" content="img/uuv/1.jpg">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B1F3A'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='800' font-size='26' text-anchor='middle' fill='%23E2B53E'%3EAA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -240,7 +240,7 @@ footer a:hover{color:var(--text)}
     <div class="hero-text">
       <div class="hey">Hey, I'm Ahmed.</div>
       <h1>I build robots that work <em>underwater</em>, in the <em>air</em> and in the real world.</h1>
-      <p class="lead">Mechatronics engineer focused on robotics and autonomous systems. I take machines from CAD and custom PCBs to flight controllers, autonomy code and field tests, and I lead the teams that build them.</p>
+      <p class="lead">Mechatronics engineer focused on robotics and autonomous systems. I take machines from CAD and custom electronics to flight controllers, ROS autonomy and field tests, and I lead the teams that build them.</p>
       <div class="roles"><span>Robotics &amp; Autonomy</span><span>Embedded Systems</span><span>Mechanical Design</span><span>Computer Vision</span></div>
       <div class="actions">
         <a class="btn btn-gold" href="#projects">See my projects</a>
@@ -249,14 +249,14 @@ footer a:hover{color:var(--text)}
       <div class="meta"><span>Breda, Netherlands</span><span>ahmed.alrabadi.sch@gmail.com</span></div>
     </div>
     <div class="photo">
-      <img src="img/profile.jpg" alt="Ahmed AlRabadi">
+      <img src="img/profile/profile.jpg" alt="Ahmed AlRabadi">
       <div class="award">🥈 2nd in Türkiye · TEKNOFEST 2026</div>
     </div>
   </header>
 
   <div class="stats">
     <div class="stat"><b>2nd</b><span>nationwide, TEKNOFEST 2026 underwater systems</span></div>
-    <div class="stat"><b>×3</b><span>TEKNOFEST project support awards</span></div>
+    <div class="stat"><b>6×</b><span>TEKNOFEST project support grants</span></div>
     <div class="stat"><b>2nd</b><span>ranked in the department, B.Sc.</span></div>
     <div class="stat"><b>9</b><span>engineers led on the UUV team</span></div>
   </div>
@@ -381,52 +381,141 @@ const PROJECTS = [
     title: "Autonomous Underwater Vehicle (ATİ-Marine)",
     org: "TEKNOFEST 2026 · Unmanned Underwater Systems, Advanced Category",
     date: "2026",
-    role: "Team Captain & Project Coordinator · team of 9",
+    role: "Team Captain; software & electronics lead · team of 9",
     badges: ["🥈 2nd Place Nationwide", "Project Support Grant"],
-    summary: "A fully autonomous UUV built for the hardest tier of the competition: a watertight structure, multi-direction underwater movement and missions run on onboard sensors.",
+    summary: "A dual-vehicle underwater system — a main ROV and a mini ROV — built for the Advanced Category. Operated manually in the water, with autonomous missions developed in simulation. Designed for depths to 20 m.",
     did: [
-      "Led a 9-person team across mechanical, electronics, software and documentation, building a dual-vehicle system.",
-      "Built the full control stack: Cube Orange+ on ArduSub 4.7.0, Raspberry Pi 5 on BlueOS, MS5837 depth sensor, brushless thrusters with reversible ESCs.",
-      "Wrote autonomous mission code in Python/pymavlink: line following, buoy circling, depth and heading hold, tested in ArduSub SITL first.",
-      "Ran assembly, integration and waterproofing tests, and coordinated the design reports."
+      "Led a 9-person team and owned the software and electronics: component selection, electrical bring-up and the control stack.",
+      "Brought up the control stack — ArduSub on the Cube Orange+, BlueOS on the Raspberry Pi — and configured the ESCs for bidirectional drive.",
+      "Wrote and tested the autonomous missions in SITL simulation; in-water operation was manual.",
+      "Diagnosed a compass-interference problem from the power wiring and thrusters and moved to an external compass; sized the thruster wiring for its current and voltage.",
+      "Wrote and prepared the competition reports."
     ],
-    results: ["2nd place in Türkiye (Advanced Category)", "Reached the finals in Gölcük", "TEKNOFEST 2026 Project Support Grant"],
-    tools: ["Cube Orange+", "ArduSub", "BlueOS", "Raspberry Pi 5", "pymavlink", "Python", "OpenCV", "SITL"],
-    photos: ["uuv-award.jpg", "uuv-dock-1.jpg", "uuv-underwater.jpg", "uuv-dock-2.jpg", "uuv-control.jpg", "uuv-dock-3.jpg", "uuv-teknofest.jpg"]
+    results: ["2nd place in Türkiye (Advanced Category)", "Reached the finals", "250,000 TL TEKNOFEST Project Support Grant", "Main ROV 13 kg, mini 6 kg · ~45 min endurance · 50 m tether"],
+    tools: ["Cube Orange+", "ArduSub", "BlueOS", "Raspberry Pi", "SITL", "Python"],
+    photos: ["uuv/1.jpg", "uuv/2.jpg", "uuv/3.jpg"]
   },
   {
-    title: "Autonomous Multi-UAV Swarm",
+    title: "Autonomous UAV + UGV System · Post-Disaster",
+    org: "TEKNOFEST 2026 · Advanced Autonomous Systems Design & Operations",
+    date: "2026",
+    role: "Fixed-wing airframe design & manufacturing planning · team of 10",
+    badges: ["Adıyaman Finalist", "Project Support Grant"],
+    summary: "A multi-year project pairing fixed-wing UAVs with unmanned ground vehicles for autonomous post-disaster operations. My part was the early design of the fixed-wing airframe.",
+    did: [
+      "Designed the fixed-wing airframe at the concept/early stage in Fusion 360, to the competition's rules and constraints.",
+      "Selected the materials and the manufacturing process for the airframe.",
+      "Year-one finals were demonstrated with a quadcopter (a competition requirement, not my work); the fixed-wing I worked on stayed at the design stage."
+    ],
+    results: ["Reached the finals in Adıyaman", "TEKNOFEST Project Support Grant", "Two-year project — awaiting results to continue"],
+    tools: ["Fusion 360"],
+    photos: ["uavugv/1.jpg", "uavugv/2.jpg", "uavugv/3.jpg"]
+  },
+  {
+    title: "Air Defense Turret · Steel Dome",
+    org: "TEKNOFEST · Çelikkubbe Air Defense Systems",
+    date: "2025 – 2026",
+    role: "Mechanical design, electronics & integration · team of 3",
+    badges: ["Report 99.5 / 100", "Project Support Grant"],
+    summary: "A turret-style air defense system, second generation. A full mechanical build with onboard vision compute, kept compact for competition points.",
+    did: [
+      "Designed the full mechanical system in Fusion 360; manufactured on Bambu Lab and FlashForge printers.",
+      "Sized and tested the gear reduction and power transmission (timing belts and pulleys).",
+      "When the pitch axis proved too heavy for the belt drive, re-worked it to a chain drive with CNC-machined parts — the main mechanical problem I solved.",
+      "Integrated the electronics — Jetson Orin Nano, ESP32 with dual camera, stepper and servo — on a hand-soldered control board. Targeting/vision software was other members'.",
+      "Gen 1 (2025): also led the mechanical design, integration and testing of the first-generation turret."
+    ],
+    results: ["Technical report scored 99.5 / 100", "Reached the stage before the final", "Under 60 cm (largest dimension) · 15 m engagement range", "TEKNOFEST Project Support Grant"],
+    tools: ["Fusion 360", "Jetson Orin Nano", "ESP32", "Bambu Lab", "FlashForge", "CNC"],
+    photos: ["turret/1.jpg", "turret/2.jpg", "turret/3.jpg"]
+  },
+  {
+    title: "SkyMesh · Autonomous Drone Swarm",
     org: "TEKNOFEST 2026 · Swarm UAV Competition",
     date: "2026",
-    role: "Mechanical & Electronics Sub-Team Lead",
-    badges: ["Project Support Grant"],
-    summary: "Three drones flying as one swarm, with ROS 2 autonomy on Raspberry Pi 5 and Pixhawk flight control. Every mission is simulated in Gazebo before it flies.",
+    role: "Mechanical & electronics sub-team lead · team of 7",
+    badges: ["Video stage", "Project Support Grant"],
+    summary: "A three-drone autonomous swarm. I led the hardware and networking, ran the testing, and wrote the onboard vision.",
     did: [
-      "Led hardware for all 3 drones: frames, component choice, soldering and wiring harnesses.",
-      "Set up the Pixhawk flight controllers and their link to the onboard computers.",
-      "Helped build QR code reading and color detection.",
-      "Flight-tested and validated the first drone."
+      "Built the 3 drones and selected their hardware — motors, batteries, propellers and WiFi adaptors.",
+      "Set up the WiFi network linking the drones, and worked the connection-loss, GPS and latency problems.",
+      "Tested and calibrated the Pixhawk flight controllers and the RC links.",
+      "Developed the onboard computer vision — QR-code reading and color detection.",
+      "Ran flight tests at Kocaeli University's Faculty of Aeronautics and Astronautics."
     ],
-    results: ["Passed all design report stages", "First drone built and flight-tested", "Drone-to-drone communication in testing"],
-    tools: ["Fusion 360", "Pixhawk", "Raspberry Pi 5", "ROS 2", "Gazebo", "QGroundControl", "OpenCV"],
-    photos: ["drone-top.jpg", "drone-build.jpg", "drone-sim.jpg"]
+    results: ["Reached the video stage", "3 drones built · 1.8 kg each · ~15 min flight", "TEKNOFEST Project Support Grant"],
+    tools: ["Fusion 360", "Pixhawk", "WiFi mesh", "OpenCV", "Python"],
+    photos: ["swarm/1.jpg", "swarm/2.jpg", "swarm/3.jpg"]
   },
   {
-    title: "Air Defense Turret · Gen 2",
-    org: "TEKNOFEST 2026 · Çelikkubbe Air Defense Systems",
+    title: "Autonomous Mobile Robot R&D",
+    org: "TBB TECH · İstanbul · Internship",
     date: "2026",
-    role: "Mechanical Design Lead & Electronics Integration · team of 3",
-    badges: ["Project Support Grant"],
-    summary: "A ground-up redesign of the turret: faster and more accurate, with one custom PCB replacing the old scattered wiring.",
+    role: "R&D intern (2-intern team) — hardware, electronics & URDF",
+    badges: ["ROS 2 digital twin"],
+    summary: "A software-first R&D pipeline for an autonomous mobile robot: a Gazebo digital twin to validate the ROS 2 autonomy stack before hardware. I owned the robot's hardware and model.",
     did: [
-      "Full mechanical redesign in Fusion 360, checked with Abaqus structural analysis.",
-      "3D-printed every structural part on Bambu Lab A1 and Carbon X printers.",
-      "Designed a custom PCB that puts power, motor control and sensors on one board.",
-      "Recalculated center of gravity and motor torque for the new layout."
+      "Built the robot's URDF/Xacro model — used for both the Gazebo simulation and the real robot.",
+      "Set up the Jetson Orin Nano compute; calibrated the cameras and tuned the PID control.",
+      "3D-printed the missing parts and fixed the power distribution and wiring.",
+      "Ran the company's 50-printer fleet, manufacturing parts on demand for student teams and competitions.",
+      "First hands-on work with the ROS 2 / Nav2 / SLAM stack; the autonomy code was written by the other intern."
     ],
-    results: ["Passed the Preliminary Design Review", "Faster and more accurate than Gen 1", "TEKNOFEST 2026 Project Support Grant"],
-    tools: ["Fusion 360", "Abaqus", "Custom PCB", "Stereo cameras", "Bambu Lab A1", "Carbon X"],
-    photos: ["gen2-turret.jpg", "gen2-turret-2.jpg", "gen2-parts.jpg", "gen2-exploded.jpg", "gen2-render.jpg"]
+    results: ["A working prototype ready for autonomous-application development"],
+    tools: ["URDF / Xacro", "ROS 2 Humble", "Gazebo", "Nav2", "SLAM Toolbox", "Jetson Orin Nano", "Bambu Lab"],
+    photos: ["amr/1.jpg", "amr/2.jpg", "amr/3.jpg"]
+  },
+  {
+    title: "Autonomous Forklift AMR",
+    org: "TEKNOFEST 2026 · Robotics Applications in Industry",
+    date: "2026",
+    role: "Mechanical design, lifting-drive sizing & reporting UI · team of 11",
+    badges: ["🥉 3rd Place Finals", "Project Support Grant"],
+    summary: "A forklift-type autonomous mobile robot for factory intralogistics, built for an Industry 4.0 challenge.",
+    did: [
+      "Designed the forklift's main body and selected its materials.",
+      "Calculated the required torque for the lifting motor.",
+      "Built the early-stage reporting UI — its layout and the ROS connection to the robots (developed early, not yet deployed to the physical robot)."
+    ],
+    results: ["3rd place in the finals", "TEKNOFEST Project Support Grant"],
+    tools: ["Fusion 360", "ROS"],
+    photos: ["forklift/1.jpg", "forklift/2.jpg", "forklift/3.jpg"]
+  },
+  {
+    title: "Dual-Robot Welding & Packing Cell",
+    org: "ABB RobotStudio · University course project (individual)",
+    date: "2025 – 2026",
+    role: "Solo project",
+    badges: ["Simulation", "Industrial robotics"],
+    summary: "A solo simulation of a two-robot automated cell: one robot welds boxes, the second stacks them on a pallet in a cube-matrix pattern. Validated entirely in simulation.",
+    did: [
+      "Programmed the robot motion and sequencing in RAPID (ABB's robot language).",
+      "Modeled conveyors, sensors, grippers and welding logic with Smart Components and Station Logic.",
+      "Built the I/O-based synchronization between the two robots for safe coordination.",
+      "Simulated the full workflow: part feeding, gripping, positioning, welding and outfeed."
+    ],
+    results: ["Full cell validated in simulation", "An individual, software-side project — industrial robot programming and logic, no team dependencies"],
+    tools: ["ABB RobotStudio", "RAPID", "Smart Components", "Station Logic"],
+    photos: ["abb/1.jpg", "abb/2.jpg", "abb/3.jpg"]
+  },
+  {
+    title: "Autonomous Mobile Robot · Full Stack",
+    org: "Breda Robotics · Erasmus internship · Netherlands",
+    date: "2026 – Now",
+    role: "Robotics Software Engineering Intern · solo",
+    badges: ["Current", "Full autonomy"],
+    summary: "Taking an autonomous mobile robot from a bare starter kit to full autonomy: a commissioned ROS platform that maps, localizes and drives itself point-to-point with obstacle avoidance, with a live web control UI.",
+    did: [
+      "Commissioned the robot from the bare kit: full ROS stack running in Docker (ROS Noetic), with sensor drivers, differential-drive control and the TF tree.",
+      "Built LiDAR SLAM maps with hector_mapping — map and live robot pose from the laser scanner and TF.",
+      "Configured AMCL localization and move_base navigation for autonomous point-to-point driving with obstacle avoidance.",
+      "Developed a web-based control UI for live mapping and goal setting (rosbridge / tf2_web_republisher).",
+      "Solved the networking (facility WiFi, DNS, ROS master hostname inside Docker) and set up boot automation.",
+      "Now migrating the stack to ROS 2 and navigation to Nav2."
+    ],
+    results: ["A real robot driving itself to a goal with obstacle avoidance", "A full ROS stack owned end-to-end", "Migrating to ROS 2 / Nav2"],
+    tools: ["ROS Noetic → ROS 2", "Nav2", "Docker", "hector_mapping", "AMCL", "move_base", "rosbridge", "LiDAR", "TF"],
+    photos: ["ezwheel/1.jpg", "ezwheel/2.jpg", "ezwheel/3.jpg"]
   },
   {
     title: "Smart Library Seat Occupancy Detection",
@@ -438,42 +527,25 @@ const PROJECTS = [
     did: [
       "Planned the project and led the team.",
       "Designed the system and led dataset collection, labeling and YOLOv8n training.",
-      "Put the model on a Raspberry Pi 5 with a Hailo AI HAT.",
+      "Deployed the model on a Raspberry Pi 5 with a Hailo AI HAT.",
       "Wrote all TÜBİTAK reports and handled budget, risk and data privacy."
     ],
-    results: ["0.995 mAP@0.5 and about 0.83 mAP@0.5:0.95", "Precision and recall ≈ 0.99 (1 false positive, 3 misses in 635)", "Tested in a real library", "Research paper in preparation"],
-    tools: ["Python", "OpenCV", "YOLOv8n", "Raspberry Pi 5", "Hailo AI HAT", "3D printing"],
-    photos: ["lib-detect.jpg", "lib-monitor.jpg", "lib-cameras.jpg", "lib-map.jpg", "lib-settings.jpg"]
-  },
-  {
-    title: "Air Defense Turret · Gen 1",
-    org: "TEKNOFEST 2025 · Air Defense Systems",
-    date: "2025",
-    role: "Mechanical Design Lead & Fabrication · team of 3",
-    badges: ["Video stage"],
-    summary: "A motorized turret with autonomous target tracking and manual override, built inside a custom 3D-printed structure.",
-    did: [
-      "Owned the mechanical pipeline: concept → CAD (CATIA, Fusion 360) → Abaqus → fabrication.",
-      "Calculated center of gravity, motor torque and load distribution.",
-      "Brought the mechanical, electronic and sensing parts together into one assembly."
-    ],
-    results: ["Working prototype meeting all mechanical requirements", "Passed the design reviews", "Reached the video demonstration stage"],
-    tools: ["CATIA", "Fusion 360", "Abaqus", "3D printing"],
-    photos: ["gen1-turret.jpg", "gen1-desk.jpg", "gen1-cad.jpg", "gen1-wiring.jpg"],
-    link: { text: "Watch the demo video ↗", url: "https://youtu.be/FFVIy7cpHsA" }
+    results: ["0.995 mAP@0.5 (~0.83 mAP@0.5:0.95)", "Precision and recall ≈ 0.99 (1 false positive, 3 misses in 635)", "Tested in a real library", "Research paper in preparation"],
+    tools: ["Python", "OpenCV", "YOLOv8n", "Raspberry Pi 5", "Hailo AI HAT"],
+    photos: ["library/1.jpg", "library/2.jpg", "library/3.jpg"]
   }
 ];
 
 const EXPERIENCE = [
   { title: "Robotics Software Engineering Intern (Erasmus)", org: "Breda Robotics · Breda, Netherlands", date: "09/2026 – Now", now: true,
-    text: "Software for an autonomous mobile robot: mapping, path planning and navigation. Built a UI for robot setup and remote driving.",
-    tags: ["AMR", "Navigation", "Path planning", "UI"] },
+    text: "Taking an autonomous mobile robot from a bare kit to full autonomy: a ROS stack in Docker, LiDAR SLAM, AMCL + move_base navigation, and a web control UI. Now migrating to ROS 2 / Nav2.",
+    tags: ["ROS", "SLAM", "Navigation", "Docker"] },
   { title: "Project Leader & Technical Lead", org: "ATİLAB Teknoloji Platformu · Istanbul", date: "02/2026 – Now", now: true,
     text: "Leads teams across software, electronics and mechanics building TEKNOFEST robots. Plans roadmaps and tasks, and does hands-on integration and testing.",
     tags: ["Leadership", "Integration", "Embedded"] },
   { title: "R&D Engineer Intern", org: "TBB TECH · Istanbul", date: "02/2026 – 06/2026",
-    text: "Navigation and path planning for warehouse robot prototypes, with obstacle avoidance and safety rules for working next to people. Tested on real robots.",
-    tags: ["Path planning", "Obstacle avoidance", "Safety"] },
+    text: "Autonomous mobile robot R&D with a ROS 2 digital twin. Built the robot's URDF model, set up the Jetson Orin Nano, cameras and PID, and ran the company's 50-printer fleet. First hands-on work with the ROS 2 / Nav2 / SLAM stack.",
+    tags: ["ROS 2", "URDF", "Jetson", "3D printing"] },
   { title: "Robotics & Embedded Systems Intern", org: "TBB TECH · Istanbul", date: "07/2025 – 09/2025",
     text: "Designed and printed parts in Fusion 360. Programmed ESP32, Arduino and Raspberry Pi for motors and sensors. Built YOLO vision and added cameras and LiDAR.",
     tags: ["ESP32", "Raspberry Pi", "YOLO", "LiDAR"] }
@@ -481,17 +553,18 @@ const EXPERIENCE = [
 
 const HONORS = [
   { mark: "2nd", title: "2nd Place Nationwide", sub: "TEKNOFEST 2026 Unmanned Underwater Systems · Advanced Category" },
-  { mark: "×3", title: "TEKNOFEST 2026 Project Support Award", sub: "Underwater Systems · Çelikkubbe Air Defense · Swarm UAV" },
+  { mark: "3rd", title: "3rd Place in the Finals", sub: "TEKNOFEST 2026 Robotics Applications in Industry · autonomous forklift" },
+  { mark: "✦", title: "Multiple TEKNOFEST Project Support Awards", sub: "Underwater · Air Defense · Swarm UAV · UAV+UGV · Forklift" },
   { mark: "TÜB", title: "TÜBİTAK 2209-A Research Grant", sub: "Library space use and human presence detection · 2025–2026" },
   { mark: "YTB", title: "Türkiye Scholarship (YTB)", sub: "Fully funded undergraduate scholarship · 2022–2026" }
 ];
 
 const SKILLS = [
-  { name: "Robotics & Autonomy", items: ["ROS 2 Humble", "ArduPilot / ArduSub", "PX4", "MAVLink & pymavlink", "BlueOS", "QGroundControl", "Gazebo", "SITL", "Multi-UAV swarm"] },
+  { name: "Robotics & Autonomy", items: ["ROS 2 Humble", "ROS 1 Noetic", "Nav2", "move_base / AMCL", "SLAM (hector_mapping)", "ArduPilot / ArduSub", "PX4", "MAVLink & pymavlink", "URDF / Xacro", "Gazebo", "SITL"] },
   { name: "Hardware & Embedded", items: ["Pixhawk / Cube Orange+", "Raspberry Pi 5", "Jetson Orin Nano", "ESP32", "Arduino", "PIC", "I²C / UART / SPI / CAN", "ESC & LiPo power", "Custom PCB", "Wiring harnesses"] },
   { name: "Computer Vision", items: ["OpenCV", "YOLO", "Object detection", "Camera calibration", "Hailo AI HAT"] },
   { name: "CAD & Manufacturing", items: ["Fusion 360", "CATIA", "SolidWorks", "AutoCAD", "Abaqus", "3D printing", "Waterproof sealing"] },
-  { name: "Programming & Tools", items: ["C / C++", "Python", "Assembly", "Linux", "Git", "Docker", "MATLAB / Simulink", "Bash"] }
+  { name: "Programming & Tools", items: ["C / C++", "Python", "Assembly", "Linux", "Git", "Docker", "ABB RobotStudio / RAPID", "MATLAB / Simulink", "Bash"] }
 ];
 const LANGUAGES = [["Arabic", "Native"], ["English", "C1 · TOEFL ITP"], ["Turkish", "C1"], ["German", "A1"]];
 
