@@ -101,6 +101,7 @@ section{padding-top:84px}
 .cover img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .cover:hover img{transform:scale(1.03)}
 .cover .count{position:absolute;right:10px;bottom:10px;background:rgba(8,26,48,.8);color:var(--text);font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px}
+.cover.noimg{display:flex;align-items:center;justify-content:center;cursor:default;color:var(--text-faint);font-size:13px;font-weight:600}
 .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .thumbs button{border:0;padding:0;cursor:zoom-in;border-radius:8px;overflow:hidden;aspect-ratio:1;background:var(--bg)}
 .thumbs img{width:100%;height:100%;object-fit:cover;opacity:.8;transition:opacity .2s}
@@ -249,7 +250,7 @@ footer a:hover{color:var(--text)}
       <div class="meta"><span>Breda, Netherlands</span><span>ahmed.alrabadi.sch@gmail.com</span></div>
     </div>
     <div class="photo">
-      <img src="img/profile/profile.jpg" alt="Ahmed AlRabadi">
+      <img id="hero-photo" src="img/profile/profile.jpg" alt="Ahmed AlRabadi">
       <div class="award">🥈 2nd in Türkiye · TEKNOFEST 2026</div>
     </div>
   </header>
@@ -573,19 +574,55 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 const chips = a => `<div class="chips">${a.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>`;
 const list = a => `<ul class="pts">${a.map(t => `<li>${esc(t)}</li>`).join("")}</ul>`;
 
-document.getElementById("proj-list").innerHTML = PROJECTS.map((p, i) => {
-  const ph = p.photos || [];
-  const thumbs = ph.slice(1, 5).map((f, k) =>
-    `<button type="button" data-p="${i}" data-k="${k + 1}" aria-label="Open photo ${k + 2}"><img src="img/${esc(f)}" alt="" loading="lazy"></button>`).join("");
-  return `
+/* ---- shared repo helpers (used by both projects and gallery) ---- */
+const IMG_EXT = ["jpg", "jpeg", "png", "webp", "gif"];
+const VID_EXT = ["mp4", "webm", "mov", "m4v"];
+const extOf = f => f.split(".").pop().toLowerCase();
+const isMedia = f => IMG_EXT.includes(extOf(f)) || VID_EXT.includes(extOf(f));
+const urlOf = path => path.split("/").map(encodeURIComponent).join("/");
+let _TREE = null;
+async function repoFiles() {
+  if (_TREE) return _TREE;
+  const host = location.hostname;
+  if (host.endsWith(".github.io")) {
+    const owner = host.split(".")[0];
+    for (const ref of ["HEAD", "main", "master"]) {
+      try {
+        const r = await fetch(`https://api.github.com/repos/${owner}/${host}/git/trees/${ref}?recursive=1`);
+        if (r.ok) { const j = await r.json(); _TREE = j.tree.filter(t => t.type === "blob").map(t => t.path); return _TREE; }
+      } catch (e) {}
+    }
+  }
+  try { const r = await fetch("files.txt", { cache: "no-store" }); if (r.ok) { _TREE = (await r.text()).split(/\r?\n/).map(s => s.trim()).filter(Boolean); return _TREE; } } catch (e) {}
+  _TREE = [];
+  return _TREE;
+}
+// any images inside "img/<slug>/", sorted 1,2,3… by name — any extension, any count
+const imagesIn = (prefix, files) =>
+  files.filter(p => p.startsWith(prefix) && IMG_EXT.includes(extOf(p)))
+       .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+async function buildProjects() {
+  const files = await repoFiles();
+  PROJECTS.forEach(p => {
+    const slug = (p.photos && p.photos[0]) ? p.photos[0].split("/")[0] : "";
+    p.slug = slug;
+    p._imgs = files.length ? imagesIn(`img/${slug}/`, files) : (p.photos || []).map(f => "img/" + f);
+  });
+  document.getElementById("proj-list").innerHTML = PROJECTS.map((p, i) => {
+    const ph = p._imgs || [];
+    const thumbs = ph.slice(1, 5).map((f, k) =>
+      `<button type="button" data-p="${i}" data-k="${k + 1}" aria-label="Open photo ${k + 2}"><img src="${esc(urlOf(f))}" alt="" loading="lazy"></button>`).join("");
+    const gallery = ph.length
+      ? `<button class="cover" type="button" data-p="${i}" data-k="0" aria-label="Open photos of ${esc(p.title)}">
+           <img src="${esc(urlOf(ph[0]))}" alt="${esc(p.title)}" loading="lazy">
+           ${ph.length > 1 ? `<span class="count">${ph.length} photos</span>` : ""}
+         </button>
+         ${ph.length > 1 ? `<div class="thumbs">${thumbs}</div>` : ""}`
+      : `<div class="cover noimg"><span>Photos coming soon</span></div>`;
+    return `
   <article class="card proj">
-    <div class="gallery">
-      <button class="cover" type="button" data-p="${i}" data-k="0" aria-label="Open photos of ${esc(p.title)}">
-        <img src="img/${esc(ph[0])}" alt="${esc(p.title)}" loading="lazy">
-        ${ph.length > 1 ? `<span class="count">${ph.length} photos</span>` : ""}
-      </button>
-      ${ph.length > 1 ? `<div class="thumbs">${thumbs}</div>` : ""}
-    </div>
+    <div class="gallery">${gallery}</div>
     <div class="info">
       <div class="top"><span class="org">${esc(p.org)}</span><span class="date">${esc(p.date)}</span></div>
       <h3>${esc(p.title)}</h3>
@@ -603,7 +640,12 @@ document.getElementById("proj-list").innerHTML = PROJECTS.map((p, i) => {
       ${p.link ? `<a class="link" href="${esc(p.link.url)}" target="_blank" rel="noopener">${esc(p.link.text)}</a>` : ""}
     </div>
   </article>`;
-}).join("");
+  }).join("");
+  const prof = files.length ? imagesIn("img/profile/", files)[0] : null;
+  const hp = document.getElementById("hero-photo");
+  if (hp && prof) hp.src = urlOf(prof);
+}
+buildProjects();
 
 document.getElementById("exp-list").innerHTML = EXPERIENCE.map(e => `
   <article class="card">
@@ -629,11 +671,6 @@ document.getElementById("skill-list").innerHTML = SKILLS.map(s => `
    A photo named "cover.jpg" is used as the album cover (otherwise the first photo).
    Albums are sorted newest first by the year at the start of the folder name.
    ================================================================ */
-const IMG_EXT = ["jpg", "jpeg", "png", "webp", "gif"];
-const VID_EXT = ["mp4", "webm", "mov", "m4v"];
-const extOf = f => f.split(".").pop().toLowerCase();
-const isMedia = f => IMG_EXT.includes(extOf(f)) || VID_EXT.includes(extOf(f));
-const urlOf = path => path.split("/").map(encodeURIComponent).join("/");
 function niceName(folder) {
   let n = folder.replace(/^\d{4}[-_ ]*/, "").replace(/[-_]+/g, " ").trim();
   return n ? n.charAt(0).toUpperCase() + n.slice(1) : folder;
@@ -641,19 +678,8 @@ function niceName(folder) {
 let ALBUMS = [];
 
 async function listGalleryFiles() {
-  const host = location.hostname;
-  if (host.endsWith(".github.io")) {
-    const owner = host.split(".")[0];
-    for (const ref of ["HEAD", "main", "master"]) {
-      try {
-        const r = await fetch(`https://api.github.com/repos/${owner}/${host}/git/trees/${ref}?recursive=1`);
-        if (r.ok) {
-          const j = await r.json();
-          return j.tree.filter(t => t.type === "blob" && t.path.startsWith("gallery/")).map(t => t.path.slice(8));
-        }
-      } catch (e) {}
-    }
-  }
+  const files = await repoFiles();
+  if (files.length) return files.filter(p => p.startsWith("gallery/")).map(p => p.slice(8));
   try {   // backup: a plain list of "folder/file" lines in gallery/list.txt
     const r = await fetch("gallery/list.txt", { cache: "no-store" });
     if (r.ok) return (await r.text()).split(/\r?\n/).map(s => s.trim()).filter(Boolean);
@@ -727,7 +753,8 @@ function step(d) { idx = (idx + d + items.length) % items.length; show(); }
 document.getElementById("proj-list").addEventListener("click", e => {
   const b = e.target.closest("[data-p]"); if (!b) return;
   const p = PROJECTS[+b.dataset.p];
-  open(p.photos.map(f => ({ src: "img/" + f, video: false, cap: p.title })), +b.dataset.k);
+  if (!p._imgs || !p._imgs.length) return;
+  open(p._imgs.map(f => ({ src: urlOf(f), video: false, cap: p.title })), +b.dataset.k);
 });
 document.getElementById("gal-list").addEventListener("click", e => {
   const b = e.target.closest("[data-a]"); if (b) open(ALBUMS[+b.dataset.a].items, 0);
